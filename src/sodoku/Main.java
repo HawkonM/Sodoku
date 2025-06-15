@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		//System.out.println("Hei!");
 			Random r = new Random();
-			int k = 0;
+			int k = 20;
 			int[][] sodoku = Gen.sudokuGenerator(k);
 			
 			//output

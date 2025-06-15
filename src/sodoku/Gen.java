@@ -2,7 +2,7 @@ package sodoku;
 	import java.util.Random;
 public class Gen {
 	// returns flase if 3x3 chunk contains num
-	static boolean unUsedInChunk(int[][] grid, int colStart, int rowStart,int num) {
+	static boolean unUsedInChunk(int[][] grid, int rowStart, int colStart,int num) {
 		for(int i=0; i<3; i++) {
 			for(int j=0; j<3; j++) {
 				if(grid[rowStart+i][colStart+j] == num) {
@@ -21,9 +21,9 @@ public class Gen {
 			for(int j=0; j<3; j++) {
 				do {
 					num = r.nextInt(9) + 1;
-				} while(!unUsedInChunk(grid, row, col, num));{
+				} while(!unUsedInChunk(grid, row, col, num));
 					grid[row+i][col+j]=num;
-				}
+				
 			}
 		}
 	}
@@ -77,8 +77,10 @@ public class Gen {
 	        }
 	        
 	        for (int num = 1; num <= 9; num++) {
+	        	
 	            if (checkIfSafe(grid, i, j, num)) {
 	                grid[i][j] = num;
+	              //System.out.print(" x"+ num+"x ");
 	                if (fillRemaining(grid, i, j + 1)) {
 	                    return true;
 	                }
@@ -110,4 +112,5 @@ public class Gen {
 	    	removeKDigits(grid, k);
 	    	return grid;
 	    }
+	 	
 }
