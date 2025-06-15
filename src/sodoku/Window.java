@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 
 import java.awt.*;
-import java.awt.event.*;
+
 
 public class Window extends JFrame {
 	private static final int SIZE = 9;
@@ -25,7 +25,10 @@ public class Window extends JFrame {
 		int k = 10;
 		
 		puzzle = Gen.sudokuGenerator(k);
-		solution = Gen.solution(puzzle);
+		solution = Gen.deepCopy(puzzle);
+		Gen.removeKDigits(puzzle, k);
+         
+		
 		
 
 		// Grid Panel
@@ -113,22 +116,5 @@ public class Window extends JFrame {
 		selectedCol = -1;
 	}
 
-	private void checkAll() {
-		for (int row = 0; row < SIZE; row++) {
-			for (int col = 0; col < SIZE; col++) {
-				if (puzzle[row][col] == 0) {
-					String text = cells[row][col].getText();
-					try {
-						int val = Integer.parseInt(text);
-						if (val == solution[row][col]) {
-							cells[row][col].setForeground(new Color(0, 128, 0));
-							cells[row][col].setEnabled(false);
-						} else {
-							cells[row][col].setForeground(Color.RED);
-						}
-					} catch (NumberFormatException ignored) {}
-				}
-			}
-		}
-	}
+
 }

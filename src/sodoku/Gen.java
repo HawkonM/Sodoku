@@ -104,20 +104,26 @@ public class Gen {
 	            }
 	        }
 		}
-		//holds a solution of the grid
-	static int[][] solution(int[][] grid) {
-		solution = grid;
-		return solution;
-	}
+		
 	
 	 	// Generate a Sudoku grid with K empty cells
 	 	static int[][] sudokuGenerator(int k) {
 	    	int[][] grid = new int[9][9];
 	    	fillDiagonal(grid);
 	    	fillRemaining(grid, 0, 0);
-	    	solution(grid);
-	    	removeKDigits(grid, k);
+	    	//solution(grid);
+	    	
 	    	return grid;
 	    }
+	 	//deepCopy for copying double array
+	 	public static int[][] deepCopy(int[][] original) {
+	 	    if (original == null) return null;
+	 	    
+	 	    int[][] copy = new int[original.length][];
+	 	    for (int i = 0; i < original.length; i++) {
+	 	        copy[i] = original[i].clone(); // Clones each row
+	 	    }
+	 	    return copy;
+	 	}
 	 	
 }
