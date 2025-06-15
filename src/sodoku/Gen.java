@@ -1,6 +1,7 @@
 package sodoku;
 	import java.util.Random;
 public class Gen {
+	static int[][] solution; 
 	// returns flase if 3x3 chunk contains num
 	static boolean unUsedInChunk(int[][] grid, int rowStart, int colStart,int num) {
 		for(int i=0; i<3; i++) {
@@ -103,12 +104,18 @@ public class Gen {
 	            }
 	        }
 		}
-
+		//holds a solution of the grid
+	static int[][] solution(int[][] grid) {
+		solution = grid;
+		return solution;
+	}
+	
 	 	// Generate a Sudoku grid with K empty cells
 	 	static int[][] sudokuGenerator(int k) {
 	    	int[][] grid = new int[9][9];
 	    	fillDiagonal(grid);
 	    	fillRemaining(grid, 0, 0);
+	    	solution(grid);
 	    	removeKDigits(grid, k);
 	    	return grid;
 	    }

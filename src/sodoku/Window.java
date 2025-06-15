@@ -1,88 +1,134 @@
 package sodoku;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
+
 import java.awt.*;
 import java.awt.event.*;
 
 public class Window extends JFrame {
-    private static final int SIZE = 9;
-    private JTextField[][] cells = new JTextField[SIZE][SIZE];
-    private int[][] solution;
-    private int[][] puzzle;
+	private static final int SIZE = 9;
+	private JButton[][] cells = new JButton[SIZE][SIZE];
+	private int[][] puzzle ;
+	static int[][] solution;
 
-    public Window() {
-        setTitle("Sudoku");
-        setSize(600, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
+	private JButton selectedCell = null;
+	private int selectedRow = -1, selectedCol = -1;
 
-        // Generate puzzle
-        int k = 20; // difficulty (cells removed)
-        solution = new int[SIZE][SIZE];
-        puzzle = Gen.sudokuGenerator(k);
-        copyGrid(puzzle, solution);
-        Gen.fillRemaining(solution, 0, 0); // get full solution again
+	public Window() {
+		setTitle("Sudoku Game");
+		setSize(600, 600); // 
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLayout(new BorderLayout());
 
-        JPanel gridPanel = new JPanel(new GridLayout(SIZE, SIZE));
-        Font font = new Font("SansSerif", Font.BOLD, 20);
+		// Generate puzzle and solution
+		int k = 10;
+		
+		puzzle = Gen.sudokuGenerator(k);
+		solution = Gen.solution(puzzle);
+		
 
-        for (int row = 0; row < SIZE; row++) {
-            for (int col = 0; col < SIZE; col++) {
-                JTextField cell = new JTextField();
-                cell.setHorizontalAlignment(JTextField.CENTER);
-                cell.setFont(font);
-                cells[row][col] = cell;
+		// Grid Panel
+		JPanel gridPanel = new JPanel(new GridLayout(SIZE, SIZE));
+		Font font = new Font("SansSerif", Font.BOLD, 18);
 
-                int value = puzzle[row][col];
-                if (value != 0) {
-                    cell.setText(String.valueOf(value));
-                    cell.setEditable(false);
-                    cell.setBackground(new Color(220, 220, 220));
-                } else {
-                    int r = row, c = col;
-                    cell.addActionListener(e -> checkCell(r, c));
-                }
+		for (int row = 0; row < SIZE; row++) {
+			for (int col = 0; col < SIZE; col++) {
+				JButton cell = new JButton();
+				cell.setFont(font);
+				cell.setFocusPainted(false);
+				cell.setOpaque(true);
+				cell.setBackground(Color.WHITE);
+				cells[row][col] = cell;
 
-                gridPanel.add(cell);
-            }
-        }
+				setCellBorder(cell, row, col);
 
-        add(gridPanel, BorderLayout.CENTER);
+				int value = puzzle[row][col];
+				if (value != 0) {
+					cell.setText(String.valueOf(value));
+					cell.setEnabled(false);
+					cell.setBackground(new Color(230, 230, 230));
+				} else {
+					int r = row, c = col;
+					cell.addActionListener(e -> selectCell(r, c));
+				}
 
-        JButton checkButton = new JButton("Check All");
-        checkButton.addActionListener(e -> checkAllCells());
-        add(checkButton, BorderLayout.SOUTH);
+				gridPanel.add(cell);
+			}
+		}
 
-        setVisible(true);
-    }
+		// Number Buttons
+		JPanel numPanel = new JPanel(new GridLayout(1, 9, 5, 5));
+		for (int i = 1; i <= 9; i++) {
+			JButton numButton = new JButton(String.valueOf(i));
+			numButton.setFont(font);
+			int num = i;
+			numButton.addActionListener(e -> fillSelectedCell(num));
+			numPanel.add(numButton);
+		}
 
-    private void copyGrid(int[][] from, int[][] to) {
-        for (int i = 0; i < SIZE; i++)
-            System.arraycopy(from[i], 0, to[i], 0, SIZE);
-    }
+		
 
-    private void checkCell(int row, int col) {
-        String input = cells[row][col].getText();
-        try {
-            int val = Integer.parseInt(input);
-            if (val == solution[row][col]) {
-                cells[row][col].setForeground(Color.GREEN.darker());
-                cells[row][col].setEditable(false); // lock correct input
-            } else {
-                cells[row][col].setForeground(Color.RED);
-            }
-        } catch (NumberFormatException e) {
-            cells[row][col].setForeground(Color.BLACK);
-        }
-    }
+		JPanel bottomPanel = new JPanel(new BorderLayout());
+		bottomPanel.add(numPanel, BorderLayout.CENTER);
 
-    private void checkAllCells() {
-        for (int row = 0; row < SIZE; row++) {
-            for (int col = 0; col < SIZE; col++) {
-                if (puzzle[row][col] == 0) {
-                    checkCell(row, col);
-                }
-            }
-        }
-    }
+		add(gridPanel, BorderLayout.CENTER);
+		add(bottomPanel, BorderLayout.SOUTH);
+		setVisible(true);
+	}
+
+	private void setCellBorder(JButton button, int row, int col) {
+		int top = (row % 3 == 0) ? 3 : 1;
+		int left = (col % 3 == 0) ? 3 : 1;
+		int bottom = (row == 8) ? 3 : 1;
+		int right = (col == 8) ? 3 : 1;
+		button.setBorder(new MatteBorder(top, left, bottom, right, Color.BLACK));
+	}
+
+	private void selectCell(int row, int col) {
+		if (selectedCell != null) {
+			selectedCell.setBackground(Color.WHITE);
+		}
+		selectedRow = row;
+		selectedCol = col;
+		selectedCell = cells[row][col];
+		selectedCell.setBackground(new Color(200, 220, 255)); // light blue
+	}
+
+	private void fillSelectedCell(int number) {
+		if (selectedCell == null || selectedRow == -1 || selectedCol == -1) return;
+
+		if (number == solution[selectedRow][selectedCol]) {
+			selectedCell.setText(String.valueOf(number));
+			selectedCell.setForeground(new Color(0, 128, 0));
+			selectedCell.setEnabled(false);
+		} else {
+			selectedCell.setText(String.valueOf(number));
+			selectedCell.setForeground(Color.RED);
+		}
+
+		selectedCell.setBackground(Color.WHITE);
+		selectedCell = null;
+		selectedRow = -1;
+		selectedCol = -1;
+	}
+
+	private void checkAll() {
+		for (int row = 0; row < SIZE; row++) {
+			for (int col = 0; col < SIZE; col++) {
+				if (puzzle[row][col] == 0) {
+					String text = cells[row][col].getText();
+					try {
+						int val = Integer.parseInt(text);
+						if (val == solution[row][col]) {
+							cells[row][col].setForeground(new Color(0, 128, 0));
+							cells[row][col].setEnabled(false);
+						} else {
+							cells[row][col].setForeground(Color.RED);
+						}
+					} catch (NumberFormatException ignored) {}
+				}
+			}
+		}
+	}
 }

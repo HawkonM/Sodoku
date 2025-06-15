@@ -7,8 +7,9 @@ public class Main {
 	public static void main(String[] args) {
 		//System.out.println("Hei!");
 			Random r = new Random();
+			new Window();
 			int k = 20;
-			int[][] sodoku = Gen.sudokuGenerator(k);
+			int[][] sodoku = Window.solution;
 			
 			//output
 			for (int[] row: sodoku) {
@@ -17,9 +18,10 @@ public class Main {
 					
 				}
 				System.out.println();
-			}
-			new Window();
+			
+			
 			
 	}
 
+	}
 }
