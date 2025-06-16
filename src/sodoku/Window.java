@@ -11,9 +11,14 @@ public class Window extends JFrame {
 	private JButton[][] cells = new JButton[SIZE][SIZE];
 	private int[][] puzzle ;
 	static int[][] solution;
-
+	
+	private int score = 0;
+	private int fail = 0;
+	
 	private JButton selectedCell = null;
 	private int selectedRow = -1, selectedCol = -1;
+	private int k = 10;
+	
 
 	public Window() {
 		setTitle("Sudoku Game");
@@ -22,7 +27,7 @@ public class Window extends JFrame {
 		setLayout(new BorderLayout());
 
 		// Generate puzzle and solution
-		int k = 10;
+		
 		
 		puzzle = Gen.sudokuGenerator(k);
 		solution = Gen.deepCopy(puzzle);
@@ -105,9 +110,16 @@ public class Window extends JFrame {
 			selectedCell.setText(String.valueOf(number));
 			selectedCell.setForeground(new Color(0, 128, 0));
 			selectedCell.setEnabled(false);
+			score++;
+			System.out.println("Score: "+Score.score(score, k));
 		} else {
 			selectedCell.setText(String.valueOf(number));
 			selectedCell.setForeground(Color.RED);
+			fail ++;
+			System.out.println("Fail: "+fail+"/3");
+			if(fail >= 3) {
+				Menu.fail();
+			}
 		}
 
 		selectedCell.setBackground(Color.WHITE);
