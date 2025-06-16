@@ -7,7 +7,8 @@ public class Main {
 	public static void main(String[] args) {
 		//System.out.println("Hei!");
 			Random r = new Random();
-			new Window();
+			//new Window();
+			Menu.start();
 			int k = 20;
 			int[][] sodoku = Window.solution;
 			
