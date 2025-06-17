@@ -2,14 +2,13 @@ package sodoku;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
-
 import java.awt.*;
 
 
 public class Window extends JFrame {
 	private static final int SIZE = 9;
 	private JButton[][] cells = new JButton[SIZE][SIZE];
-	private int[][] puzzle ;
+	static int[][] puzzle;
 	static int[][] solution;
 	
 	private int score = 0;
@@ -17,13 +16,13 @@ public class Window extends JFrame {
 	
 	private JButton selectedCell = null;
 	private int selectedRow = -1, selectedCol = -1;
-	private int k;
+	private int k; //k removed cells when generating a new board
 	
 	
 
 	public Window(int k) {
 		this.k=k;
-		setTitle("Sudoku Game");
+		setTitle("Sudoku");
 		setSize(600, 600);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

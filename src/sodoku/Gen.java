@@ -1,7 +1,9 @@
 package sodoku;
-	import java.util.Random;
+	
+import java.util.Random;
+
 public class Gen {
-	static int[][] solution; 
+	 
 	// returns flase if 3x3 chunk contains num
 	static boolean unUsedInChunk(int[][] grid, int rowStart, int colStart,int num) {
 		for(int i=0; i<3; i++) {
