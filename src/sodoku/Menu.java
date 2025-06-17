@@ -25,7 +25,7 @@ public class Menu {
 	    diffLabel.setForeground(Color.WHITE);
 	    diffLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-	    String[] difficulties = {"Easy (20)", "Medium (40)", "Hard (60)", "Custom"};
+	    String[] difficulties = {"Easy (20 missing)", "Medium (40 missing)", "Hard (60 missing)", "Custom"};
 	    JComboBox<String> difficultyBox = new JComboBox<>(difficulties);
 	    difficultyBox.setMaximumSize(new Dimension(200, 30));
 	    difficultyBox.setAlignmentX(Component.CENTER_ALIGNMENT);

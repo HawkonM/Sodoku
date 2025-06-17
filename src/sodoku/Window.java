@@ -24,7 +24,8 @@ public class Window extends JFrame {
 	public Window(int k) {
 		this.k=k;
 		setTitle("Sudoku Game");
-		setSize(600, 600); // 
+		setSize(600, 600);
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		setBackground(Color.BLACK);
@@ -34,7 +35,18 @@ public class Window extends JFrame {
 		puzzle = Gen.sudokuGenerator(k);
 		solution = Gen.deepCopy(puzzle);
 		Gen.removeKDigits(puzzle, k);
-         
+		
+		
+		
+		// Output for solution for "testing purposes"
+		int[][] sodoku = Window.solution;
+		for (int[] row: sodoku) {
+			for (int cell:row) {
+				System.out.print(cell + "  ");
+				
+			}
+			System.out.println();
+		}
 		
 		
 
